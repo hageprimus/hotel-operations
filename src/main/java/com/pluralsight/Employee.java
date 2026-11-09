@@ -92,4 +92,5 @@ public class Employee {
         LocalTime now = LocalTime.now();
         return now.getHour() + (double) now.getMinute() / 60;
     }
+
 }
