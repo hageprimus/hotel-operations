@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.time.LocalTime;
+
 public class Employee {
     private static final double OVERTIME_CUTOFF = 40;
 
@@ -8,6 +10,7 @@ public class Employee {
     private String department;
     private double hoursWorked;
     private double payRate;
+    private double punchInTime;
 
     public Employee(int employeeId, String name, String department, double hoursWorked, double payRate) {
         this.employeeId = employeeId;
@@ -45,6 +48,10 @@ public class Employee {
         return hoursWorked;
     }
 
+    public void setHoursWorked(double hoursWorked) {
+        this.hoursWorked = hoursWorked;
+    }
+
     public double getPayRate() {
         return payRate;
     }
@@ -53,8 +60,20 @@ public class Employee {
         this.payRate = payRate;
     }
 
-    public void punchTimeCard(double startTime, double endTime) {
-        this.hoursWorked = Math.max(0, endTime - startTime);
+    public void punchIn(int time) {
+        punchInTime = time;
+    }
+
+    public void punchIn() {
+        punchInTime = currentTimeToDecimal();
+    }
+
+    public void punchOut(int time) {
+        hoursWorked = time - punchInTime;
+    }
+
+    public void punchOut() {
+        hoursWorked = currentTimeToDecimal() - punchInTime;
     }
 
     public double getTotalPay() {
@@ -67,5 +86,10 @@ public class Employee {
 
     public double getOvertimeHours() {
         return Math.max(0, hoursWorked - OVERTIME_CUTOFF);
+    }
+
+    public double currentTimeToDecimal() {
+        LocalTime now = LocalTime.now();
+        return now.getHour() + (double) now.getMinute() / 60;
     }
 }
